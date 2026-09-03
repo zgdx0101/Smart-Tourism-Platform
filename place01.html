@@ -18,6 +18,11 @@
             width: 100%;
         }
 
+        .video-box {
+            position: relative;
+            width: 100%;
+        }
+
         video {
             width: 100%;
             aspect-ratio: 9 / 16;
@@ -26,9 +31,44 @@
             background: black;
         }
 
+        /* ปุ่มเต็มจอ */
+        .fullscreen-btn {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+
+            width: 42px;
+            height: 42px;
+
+            border: none;
+            border-radius: 8px;
+
+            background: rgba(0, 0, 0, 0.75);
+            color: white;
+
+            font-size: 22px;
+            cursor: pointer;
+
+            z-index: 5;
+        }
+
+        .fullscreen-btn:hover {
+            background: rgba(0, 0, 0, 0.95);
+        }
+
+        /* มือถือ */
         @media (max-width: 700px) {
             .video-container {
                 grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .fullscreen-btn {
+                width: 36px;
+                height: 36px;
+                right: 6px;
+                bottom: 6px;
+                font-size: 18px;
             }
         }
     </style>
@@ -38,23 +78,75 @@
 
 <div class="video-container">
 
-    <video controls playsinline preload="metadata">
-        <source src="videos/video1.mp4" type="video/mp4">
-    </video>
+    <!-- VIDEO 1 -->
+    <div class="video-box">
+        <video controls playsinline preload="metadata">
+            <source src="videos/video1.mp4" type="video/mp4">
+        </video>
 
-    <video controls playsinline preload="metadata">
-        <source src="videos/video2.mp4" type="video/mp4">
-    </video>
+        <button class="fullscreen-btn" onclick="fullscreenVideo(this)">
+            ⛶
+        </button>
+    </div>
 
-    <video controls playsinline preload="metadata">
-        <source src="videos/video3.mp4" type="video/mp4">
-    </video>
 
-    <video controls playsinline preload="metadata">
-        <source src="videos/video4.mp4" type="video/mp4">
-    </video>
+    <!-- VIDEO 2 -->
+    <div class="video-box">
+        <video controls playsinline preload="metadata">
+            <source src="videos/video2.mp4" type="video/mp4">
+        </video>
+
+        <button class="fullscreen-btn" onclick="fullscreenVideo(this)">
+            ⛶
+        </button>
+    </div>
+
+
+    <!-- VIDEO 3 -->
+    <div class="video-box">
+        <video controls playsinline preload="metadata">
+            <source src="videos/video3.mp4" type="video/mp4">
+        </video>
+
+        <button class="fullscreen-btn" onclick="fullscreenVideo(this)">
+            ⛶
+        </button>
+    </div>
+
+
+    <!-- VIDEO 4 -->
+    <div class="video-box">
+        <video controls playsinline preload="metadata">
+            <source src="videos/video4.mp4" type="video/mp4">
+        </video>
+
+        <button class="fullscreen-btn" onclick="fullscreenVideo(this)">
+            ⛶
+        </button>
+    </div>
 
 </div>
+
+
+<script>
+function fullscreenVideo(button) {
+
+    const video = button.parentElement.querySelector("video");
+
+    if (video.requestFullscreen) {
+        video.requestFullscreen();
+
+    } else if (video.webkitRequestFullscreen) {
+        video.webkitRequestFullscreen();
+
+    } else if (video.webkitEnterFullscreen) {
+        video.webkitEnterFullscreen();
+
+    } else {
+        alert("เบราว์เซอร์นี้ไม่รองรับโหมดเต็มจอ");
+    }
+}
+</script>
 
 </body>
 </html>
