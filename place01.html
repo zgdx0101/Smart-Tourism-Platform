@@ -4,41 +4,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <title>วิดีโอแนะนำสถานที่</title>
+
     <style>
-        html, body {
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
             margin: 0;
             padding: 0;
+            width: 100%;
             background: white;
         }
 
-        .video-container {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            width: 100%;
+        body {
+            overflow-x: hidden;
         }
 
+        /* กล่องรวมวิดีโอ */
+        .video-container {
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 16px;
+            padding: 10px;
+        }
+
+        /* กล่องของแต่ละวิดีโอ */
         .video-box {
             position: relative;
             width: 100%;
+            overflow: hidden;
+            border-radius: 10px;
+            background: #000;
         }
 
+        /* วิดีโอแนวตั้ง */
         video {
+            display: block;
             width: 100%;
+            height: auto;
             aspect-ratio: 9 / 16;
             object-fit: cover;
-            display: block;
-            background: black;
+            background: #000;
         }
 
         /* ปุ่มเต็มจอ */
         .fullscreen-btn {
             position: absolute;
-            right: 10px;
-            bottom: 10px;
+            right: 8px;
+            bottom: 45px;
 
-            width: 42px;
-            height: 42px;
+            width: 40px;
+            height: 40px;
 
             border: none;
             border-radius: 8px;
@@ -47,28 +67,46 @@
             color: white;
 
             font-size: 22px;
+            line-height: 40px;
+            text-align: center;
+
             cursor: pointer;
-
-            z-index: 5;
+            z-index: 10;
         }
 
-        .fullscreen-btn:hover {
-            background: rgba(0, 0, 0, 0.95);
+        .fullscreen-btn:active {
+            transform: scale(0.92);
         }
 
-        /* มือถือ */
+        /* =========================
+           มือถือ
+           ========================= */
         @media (max-width: 700px) {
+
             .video-container {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 10px;
+            }
+
+            .video-box {
+                width: 100%;
+                max-width: 500px;
+                margin: 0 auto;
+            }
+
+            video {
+                width: 100%;
+                aspect-ratio: 9 / 16;
             }
 
             .fullscreen-btn {
-                width: 36px;
-                height: 36px;
-                right: 6px;
-                bottom: 6px;
-                font-size: 18px;
+                width: 42px;
+                height: 42px;
+                line-height: 42px;
+                right: 10px;
+                bottom: 48px;
+                font-size: 22px;
             }
         }
     </style>
@@ -78,49 +116,65 @@
 
 <div class="video-container">
 
-    <!-- VIDEO 1 -->
+    <!-- วิดีโอ 1 -->
     <div class="video-box">
         <video controls playsinline preload="metadata">
             <source src="videos/video1.mp4" type="video/mp4">
+            เบราว์เซอร์ไม่รองรับวิดีโอ
         </video>
 
-        <button class="fullscreen-btn" onclick="fullscreenVideo(this)">
+        <button
+            class="fullscreen-btn"
+            onclick="openFullscreen(this)"
+            aria-label="เต็มหน้าจอ">
             ⛶
         </button>
     </div>
 
 
-    <!-- VIDEO 2 -->
+    <!-- วิดีโอ 2 -->
     <div class="video-box">
         <video controls playsinline preload="metadata">
             <source src="videos/video2.mp4" type="video/mp4">
+            เบราว์เซอร์ไม่รองรับวิดีโอ
         </video>
 
-        <button class="fullscreen-btn" onclick="fullscreenVideo(this)">
+        <button
+            class="fullscreen-btn"
+            onclick="openFullscreen(this)"
+            aria-label="เต็มหน้าจอ">
             ⛶
         </button>
     </div>
 
 
-    <!-- VIDEO 3 -->
+    <!-- วิดีโอ 3 -->
     <div class="video-box">
         <video controls playsinline preload="metadata">
             <source src="videos/video3.mp4" type="video/mp4">
+            เบราว์เซอร์ไม่รองรับวิดีโอ
         </video>
 
-        <button class="fullscreen-btn" onclick="fullscreenVideo(this)">
+        <button
+            class="fullscreen-btn"
+            onclick="openFullscreen(this)"
+            aria-label="เต็มหน้าจอ">
             ⛶
         </button>
     </div>
 
 
-    <!-- VIDEO 4 -->
+    <!-- วิดีโอ 4 -->
     <div class="video-box">
         <video controls playsinline preload="metadata">
             <source src="videos/video4.mp4" type="video/mp4">
+            เบราว์เซอร์ไม่รองรับวิดีโอ
         </video>
 
-        <button class="fullscreen-btn" onclick="fullscreenVideo(this)">
+        <button
+            class="fullscreen-btn"
+            onclick="openFullscreen(this)"
+            aria-label="เต็มหน้าจอ">
             ⛶
         </button>
     </div>
@@ -129,22 +183,31 @@
 
 
 <script>
-function fullscreenVideo(button) {
+function openFullscreen(button) {
 
-    const video = button.parentElement.querySelector("video");
+    const video = button
+        .closest(".video-box")
+        .querySelector("video");
 
+    /* iPhone / Safari */
+    if (video.webkitEnterFullscreen) {
+        video.webkitEnterFullscreen();
+        return;
+    }
+
+    /* Chrome / Android / Desktop */
     if (video.requestFullscreen) {
         video.requestFullscreen();
-
-    } else if (video.webkitRequestFullscreen) {
-        video.webkitRequestFullscreen();
-
-    } else if (video.webkitEnterFullscreen) {
-        video.webkitEnterFullscreen();
-
-    } else {
-        alert("เบราว์เซอร์นี้ไม่รองรับโหมดเต็มจอ");
+        return;
     }
+
+    /* Safari รุ่นอื่น */
+    if (video.webkitRequestFullscreen) {
+        video.webkitRequestFullscreen();
+        return;
+    }
+
+    alert("อุปกรณ์นี้ไม่รองรับโหมดเต็มหน้าจอ");
 }
 </script>
 
