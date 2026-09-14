@@ -1,281 +1,312 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>วิดีโอแนะนำสถานที่</title>
+    <title>วิดีโอแนะนำสถานที่</title>
 
-<style>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-* {
-    box-sizing: border-box;
-}
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            background: white;
+        }
 
-html,
-body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    background: #fff;
-}
+        body {
+            overflow-x: hidden;
+        }
 
-/* =========================
-   กล่องรวมวิดีโอ
-   ========================= */
+        /* =========================
+           กล่องรวมวิดีโอ
+           ========================= */
 
-.video-container {
-    width: 100%;
+        .video-container {
+            width: 100%;
 
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
+            display: flex;
+            flex-wrap: nowrap;
 
-    gap: 12px;
+            gap: 16px;
 
-    overflow-x: auto;
-    overflow-y: hidden;
+            /* เลื่อนซ้าย-ขวา */
+            overflow-x: auto;
 
-    scrollbar-width: none;
+            /* ห้ามเกิดการเลื่อนแนวตั้งจากกล่อง */
+            overflow-y: hidden;
 
-    align-items: flex-start;
-}
+            padding: 10px;
 
-.video-container::-webkit-scrollbar {
-    display: none;
-}
+            -webkit-overflow-scrolling: touch;
 
+            scroll-snap-type: x mandatory;
 
-/* =========================
-   PC
-   4 คลิปต่อแถว
-   ========================= */
+            /* ซ่อน Scrollbar */
+            scrollbar-width: none;
+        }
 
-.video-box {
-    position: relative;
+        .video-container::-webkit-scrollbar {
+            display: none;
+        }
 
-    flex: 0 0 calc(25% - 9px);
 
-    width: calc(25% - 9px);
+        /* =========================
+           กล่องวิดีโอ
+           ========================= */
 
-    min-width: 0;
-}
+        .video-box {
+            position: relative;
 
+            /* คอม = 4 วิดีโอในแถวเดียว */
+            flex: 0 0 calc(25% - 12px);
 
-/* =========================
-   ตัววิดีโอ PC
-   ========================= */
+            min-width: 0;
 
-.video-box video {
+            overflow: hidden;
 
-    display: block;
+            border-radius: 10px;
 
-    width: 100%;
+            background: black;
 
-    /*
-       9:16
-       ความสูงจะถูกบังคับตามสัดส่วน
-    */
-    height: auto;
+            scroll-snap-align: start;
+        }
 
-    aspect-ratio: 9 / 16;
 
-    object-fit: cover;
+        /* =========================
+           วิดีโอแนวตั้ง
+           ========================= */
 
-    background: #000;
+        video {
+            display: block;
 
-    border-radius: 16px;
-}
+            width: 100%;
+            height: auto;
 
+            aspect-ratio: 9 / 16;
 
-/* =========================
-   ปุ่ม Fullscreen
-   ========================= */
+            object-fit: cover;
 
-.fullscreen-btn {
+            background: black;
+        }
 
-    position: absolute;
 
-    right: 10px;
-    bottom: 10px;
+        /* =========================
+           ปุ่มเต็มจอ
+           ========================= */
 
-    width: 38px;
-    height: 38px;
+        .fullscreen-btn {
+            position: absolute;
 
-    border: none;
-    border-radius: 50%;
+            right: 8px;
+            bottom: 45px;
 
-    background: rgba(0,0,0,0.65);
+            width: 40px;
+            height: 40px;
 
-    color: white;
+            border: none;
+            border-radius: 8px;
 
-    font-size: 20px;
+            background: rgba(0, 0, 0, 0.75);
 
-    cursor: pointer;
+            color: white;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+            font-size: 22px;
 
-    z-index: 10;
-}
+            cursor: pointer;
 
-.fullscreen-btn:hover {
-    background: rgba(0,0,0,0.85);
-}
+            z-index: 10;
+        }
 
+        .fullscreen-btn:active {
+            transform: scale(0.92);
+        }
 
-/* =========================
-   MOBILE
-   ปัดซ้าย / ขวา
-   ========================= */
 
-@media (max-width: 700px) {
+        /* =========================
+           มือถือ
+           ========================= */
 
-    .video-container {
+        @media (max-width: 700px) {
 
-        width: 100%;
+            .video-container {
+                display: flex;
 
-        display: flex;
+                flex-wrap: nowrap;
 
-        flex-direction: row;
+                gap: 12px;
 
-        flex-wrap: nowrap;
+                overflow-x: auto;
+                overflow-y: hidden;
 
-        gap: 10px;
+                padding: 10px;
+            }
 
-        overflow-x: auto;
-        overflow-y: hidden;
 
-        -webkit-overflow-scrolling: touch;
+            .video-box {
+                /* ขนาดเดิมที่มึงบอกว่าโอเค */
+                flex: 0 0 75vw;
 
-        scroll-snap-type: x mandatory;
-    }
+                width: 75vw;
 
+                min-width: 75vw;
+                max-width: 75vw;
+            }
 
-    .video-box {
 
-        flex: 0 0 75vw;
+            video {
+                width: 100%;
 
-        width: 75vw;
+                aspect-ratio: 9 / 16;
 
-        min-width: 75vw;
-        max-width: 75vw;
+                object-fit: cover;
+            }
 
-        scroll-snap-align: start;
-    }
 
+            .fullscreen-btn {
+                width: 42px;
+                height: 42px;
 
-    .video-box video {
+                right: 8px;
+                bottom: 48px;
 
-        width: 100%;
+                font-size: 22px;
+            }
+        }
 
-        /*
-           บังคับ 9:16
-        */
-        height: calc(75vw * 16 / 9);
-
-        aspect-ratio: 9 / 16;
-
-        object-fit: cover;
-
-        border-radius: 16px;
-    }
-
-}
-
-</style>
+    </style>
 </head>
 
 
 <body>
 
+
+<!-- =========================
+     วิดีโอทั้งหมด
+     ========================= -->
+
 <div class="video-container">
 
 
     <!-- VIDEO 1 -->
-
     <div class="video-box">
 
         <video
             controls
             playsinline
-            preload="metadata"
-        >
-            <source src="videos/video1.mp4" type="video/mp4">
+            preload="metadata">
+
+            <source
+                src="videos/video1.mp4"
+                type="video/mp4">
+
+            เบราว์เซอร์ของคุณไม่รองรับวิดีโอ
+
         </video>
+
 
         <button
             class="fullscreen-btn"
             onclick="openFullscreen(this)"
-        >
+            aria-label="เต็มหน้าจอ">
+
             ⛶
+
         </button>
 
     </div>
+
 
 
     <!-- VIDEO 2 -->
-
     <div class="video-box">
 
         <video
             controls
             playsinline
-            preload="metadata"
-        >
-            <source src="videos/video2.mp4" type="video/mp4">
+            preload="metadata">
+
+            <source
+                src="videos/video2.mp4"
+                type="video/mp4">
+
+            เบราว์เซอร์ของคุณไม่รองรับวิดีโอ
+
         </video>
+
 
         <button
             class="fullscreen-btn"
             onclick="openFullscreen(this)"
-        >
+            aria-label="เต็มหน้าจอ">
+
             ⛶
+
         </button>
 
     </div>
+
 
 
     <!-- VIDEO 3 -->
-
     <div class="video-box">
 
         <video
             controls
             playsinline
-            preload="metadata"
-        >
-            <source src="videos/video3.mp4" type="video/mp4">
+            preload="metadata">
+
+            <source
+                src="videos/video3.mp4"
+                type="video/mp4">
+
+            เบราว์เซอร์ของคุณไม่รองรับวิดีโอ
+
         </video>
+
 
         <button
             class="fullscreen-btn"
             onclick="openFullscreen(this)"
-        >
+            aria-label="เต็มหน้าจอ">
+
             ⛶
+
         </button>
 
     </div>
 
 
-    <!-- VIDEO 4 -->
 
+    <!-- VIDEO 4 -->
     <div class="video-box">
 
         <video
             controls
             playsinline
-            preload="metadata"
-        >
-            <source src="videos/video4.mp4" type="video/mp4">
+            preload="metadata">
+
+            <source
+                src="videos/video4.mp4"
+                type="video/mp4">
+
+            เบราว์เซอร์ของคุณไม่รองรับวิดีโอ
+
         </video>
+
 
         <button
             class="fullscreen-btn"
             onclick="openFullscreen(this)"
-        >
+            aria-label="เต็มหน้าจอ">
+
             ⛶
+
         </button>
 
     </div>
@@ -284,31 +315,54 @@ body {
 </div>
 
 
+
 <script>
+
+/* =========================
+   Fullscreen
+   ========================= */
 
 function openFullscreen(button) {
 
-    const video = button.parentElement.querySelector("video");
+    const video =
+        button
+            .closest(".video-box")
+            .querySelector("video");
 
-    if (!video) return;
+
+    /* iPhone / Safari */
+
+    if (video.webkitEnterFullscreen) {
+
+        video.webkitEnterFullscreen();
+
+        return;
+    }
+
+
+    /* Chrome / Android / Desktop */
 
     if (video.requestFullscreen) {
 
         video.requestFullscreen();
 
-    } else if (video.webkitEnterFullscreen) {
+        return;
+    }
 
-        video.webkitEnterFullscreen();
 
-    } else if (video.webkitRequestFullscreen) {
+    /* Safari */
+
+    if (video.webkitRequestFullscreen) {
 
         video.webkitRequestFullscreen();
 
+        return;
     }
 
 }
 
 </script>
+
 
 </body>
 </html>
